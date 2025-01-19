@@ -2,7 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '@/views/HomePage.vue'
 import LecturerDashboard from '@/views/LecturerViews/LecturerDashboard.vue'
 import StudentDashboard from '@/views/StudentViews/StudentDashboard.vue'
-import TestPage1 from '@/views/LecturerViews/LecturerComponents/CourseDetails.vue'
+import CourseDetails from '@/views/LecturerViews/LecturerComponents/CourseDetails.vue'
+import RegisterDevice from '@/views/RegisterDevice.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,7 +26,12 @@ const router = createRouter({
     {
       path: '/course/:id',
       name: 'CourseDetails',
-      component: TestPage1,
+      component: CourseDetails,
+    },
+    {
+      path: '/registerdevice/:token',
+      name: 'RegisterDevice',
+      component: RegisterDevice,
     },
   ],
 })

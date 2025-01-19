@@ -1,4 +1,3 @@
-<!-- TestPage1.vue -->
 <template>
   <div>
     <div v-if="course">
@@ -17,22 +16,26 @@
             <th scope="col">Imię</th>
             <th scope="col">Numer albumu</th>
             <th scope="col">Obecność</th>
+            <th scope="col">Rejestracja urządzenia</th>
+            <th scope="col">Aktywne urządzenie</th>
 
           </tr>
         </thead>
         <tbody>
           <tr v-for="student in studentList" :key="student.id">
+            <td>{{ student.attenderUserId }} </td>
             <td>{{ student.userSurname }} </td>
             <td>{{ student.userName }} </td>
             <td>{{ student.studentAlbumIdNumber }} </td>
-            <td>{{ student.wasUserPresent }} </td>
-
-
+            <td>
+              <button v-if="student.wasUserPresent" type="button" class="btn btn-success">Obecny</button>
+              <button v-else type="button" class="btn btn-warning">Nieobecny</button>
+            </td>
+            <td><button type="button" class="btn btn-secondary" @click="registerDevice(student.attenderUserId)">Skopiuj
+                link</button></td>
           </tr>
-
         </tbody>
       </table>
-
     </div>
     <div v-else>
       <p>Ładowanie kursu...</p>
@@ -43,9 +46,8 @@
 <script setup lang="ts">
 import { defineProps } from 'vue';
 import { Backend } from '@/main'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { formatDate } from '@/lib/Extensions/dateFormatter'
-
 
 const props = defineProps({
   selectedCourseId: {
@@ -54,22 +56,53 @@ const props = defineProps({
   }
 });
 
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const course = ref<any>();
 const studentList = ref()
 const courseId = props.selectedCourseId
+const refreshInterval = 30000;
+const registerDeviceToken = ref()
+const registerDeviceLink = ref()
+let interval: number | undefined;
 
+const fetchStudentList = async () => {
+  try {
+    studentList.value = await Backend.courseSessionAttendanceListGet(courseId).then(
+      (result) => result);
+  } catch (error) {
+    console.error('Błąd podczas odświeżania listy studentów:', error);
+  }
+};
 
 onMounted(async () => {
   try {
     course.value = await Backend.courseTeacherSessionGet(courseId).then(
-      (result) => (course.value = result))
+      (result) => result);
 
-    studentList.value = await Backend.courseSessionAttendanceListGet(courseId).then(
-      (result) => (studentList.value = result))
+    await fetchStudentList();
+
+    interval = setInterval(fetchStudentList, refreshInterval);
   } catch (error) {
-    console.error('Błąd podczas ładowania sesji:', error)
+    console.error('Błąd podczas ładowania sesji:', error);
   }
-})
+});
+
+onUnmounted(() => {
+  if (interval) {
+    clearInterval(interval);
+  }
+});
+
+
+const registerDevice = async (id: number) => {
+  registerDeviceToken.value = await Backend.userDeviceRegisterTokenGet(id);
+
+  const token = registerDeviceToken.value?.token;
+  if (token) {
+    registerDeviceLink.value = `${window.location.origin}/registerdevice/${token}`
+    console.log(registerDeviceLink.value)
+  } else {
+    console.error("Token nie został znaleziony w odpowiedzi.");
+  }
+};
 </script>
