@@ -100,6 +100,7 @@ const registerDevice = async (id: number) => {
   const token = registerDeviceToken.value?.token;
   if (token) {
     registerDeviceLink.value = `${window.location.origin}/registerdevice/${token}`
+    navigator.clipboard.writeText(registerDeviceLink.value)
     console.log(registerDeviceLink.value)
   } else {
     console.error("Token nie został znaleziony w odpowiedzi.");

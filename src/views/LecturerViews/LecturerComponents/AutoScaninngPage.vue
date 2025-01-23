@@ -1,3 +1,0 @@
-<template>
-  AutoScanning page
-</template>

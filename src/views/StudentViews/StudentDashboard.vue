@@ -1,10 +1,46 @@
-<template>Yaay</template>
+<template>
+  <div class="container-fluid vh-100 border border-primary">
+    <div class="row">
+      <div class="col-md-2 border border-primary">
+        <button @click="setComponentId(0)">Zarejestruj obecność</button>
+      </div>
+      <div class="col-md-10 border border-primary">
+        <div v-if="componentId == 0">
+          <RegisterAttendence />
+        </div>
+        <div v-if="componentId == 1">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2 border border-primary">
+        <button @click="setComponentId(1)">Rejestracja urządzenia</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style lang="css">
+.row {
+  height: 20vh;
+}
+
+.col-md-10 {
+  height: 100vh;
+  overflow-y: auto;
+}
+</style>
+
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import validateToken from '@/lib/Extensions/JWTDecodeLib'
 import { useRouter } from 'vue-router'
+import RegisterAttendence from './StudentComponents/RegisterAttendence.vue'
+
+
 
 const router = useRouter()
+const componentId = ref(0)
 
 onMounted(() => {
   const isValidToken = validateToken()
@@ -17,4 +53,8 @@ onMounted(() => {
     router.push('/')
   }
 })
+
+const setComponentId = (id: number) => {
+  componentId.value = id
+}
 </script>

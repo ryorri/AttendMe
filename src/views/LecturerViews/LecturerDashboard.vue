@@ -9,7 +9,7 @@
           <LecturerCourses />
         </div>
         <div v-if="componentId == 1">
-
+          <ScanningPage />
         </div>
       </div>
     </div>
@@ -37,6 +37,7 @@ import { onMounted, ref } from 'vue'
 import validateToken from '@/lib/Extensions/JWTDecodeLib'
 import { useRouter } from 'vue-router'
 import LecturerCourses from './LecturerComponents/LecturerCourses.vue'
+import ScanningPage from './LecturerComponents/ScanningPage.vue'
 
 
 const router = useRouter()
