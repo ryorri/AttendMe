@@ -7,6 +7,9 @@
       <p><strong>Rozpoczęcie:</strong> {{ formatDate(course.dateStart) }}</p>
       <p><strong>Zakończenie:</strong> {{ formatDate(course.dateEnd) }}</p>
 
+
+      <button @click="goToScan()">asdas</button>
+
       <h3>Lista obecności</h3>
 
       <table class="table table-striped">
@@ -44,9 +47,9 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
+import { useRouter } from 'vue-router'
 import { Backend } from '@/main'
-import { ref, onMounted, onUnmounted } from 'vue'
+import { defineProps, ref, onMounted, onUnmounted } from 'vue'
 import { formatDate } from '@/lib/Extensions/dateFormatter'
 
 const props = defineProps({
@@ -56,6 +59,7 @@ const props = defineProps({
   }
 });
 
+const router = useRouter()
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const course = ref<any>();
 const studentList = ref()
@@ -63,7 +67,7 @@ const courseId = props.selectedCourseId
 const refreshInterval = 30000;
 const registerDeviceToken = ref()
 const registerDeviceLink = ref()
-let interval: number | undefined;
+const interval = ref()
 
 const fetchStudentList = async () => {
   try {
@@ -81,15 +85,15 @@ onMounted(async () => {
 
     await fetchStudentList();
 
-    interval = setInterval(fetchStudentList, refreshInterval);
+    interval.value = setInterval(fetchStudentList, refreshInterval);
   } catch (error) {
     console.error('Błąd podczas ładowania sesji:', error);
   }
 });
 
 onUnmounted(() => {
-  if (interval) {
-    clearInterval(interval);
+  if (interval.value) {
+    clearInterval(interval.value);
   }
 });
 
@@ -101,9 +105,12 @@ const registerDevice = async (id: number) => {
   if (token) {
     registerDeviceLink.value = `${window.location.origin}/registerdevice/${token}`
     navigator.clipboard.writeText(registerDeviceLink.value)
-    console.log(registerDeviceLink.value)
   } else {
     console.error("Token nie został znaleziony w odpowiedzi.");
   }
 };
+
+const goToScan = () => {
+  router.push(`/lecturer/scanningpage/${courseId}`)
+}
 </script>
