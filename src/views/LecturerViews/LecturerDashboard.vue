@@ -37,7 +37,7 @@ import { onMounted, ref } from 'vue'
 import validateToken from '@/lib/Extensions/JWTDecodeLib'
 import { useRouter } from 'vue-router'
 import LecturerCourses from './LecturerComponents/LecturerCourses.vue'
-import ScanningPage from './LecturerComponents/ScanningPage.vue'
+import ScanningPage from './ScanningPage.vue'
 
 
 const router = useRouter()
@@ -47,9 +47,9 @@ onMounted(() => {
   const isValidToken = validateToken()
 
   if (isValidToken.isValid == true && isValidToken.role == 'teacher') {
-    router.push('/LecturerDashboard')
+    router.push('/Lecturer/LecturerDashboard')
   } else if (isValidToken.isValid == true && isValidToken.role == 'student') {
-    router.push('/StudentDashboard')
+    router.push('/Student/StudentDashboard')
   } else {
     router.push('/')
   }

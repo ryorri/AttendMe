@@ -2,10 +2,12 @@
 
 
   <div v-if="isSaved">Zapisano!</div>
+  <div v-if="qrData">{{ qrData.value }}!</div>
   <qrcode-stream @detect="onDetect" />
 
 
   <button @click="checkData()">Check</button>
+
 </template>
 
 <script setup lang="ts">
@@ -15,6 +17,7 @@ import { Backend } from '@/main'
 
 const qrData = ref()
 const isSaved = ref(false)
+
 
 const checkData = () => {
   console.log(qrData.value)
@@ -29,7 +32,9 @@ function onDetect(detectedCodes: any) {
 async function checkQrData() {
   if (qrData.value != undefined) {
     isSaved.value = true
-    await Backend.courseSessionAttendanceRegister('adhnlrR_1V9AeEdU0aeGkYQMQXysgHXLUVpbqVKeCxbN-SD9sMIuBRzTfgiAjTCu_9h3FH8ZqsktGug4qu5Y')
+
+    Backend.deviceTokenResult = qrData.value[0].rawValue
+    await Backend.courseSessionAttendanceRegister(qrData.value[0].rawValue)
   }
 
   if (isSaved.value) {

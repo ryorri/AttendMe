@@ -2,11 +2,11 @@
   <div class="container-fluid vh-100 border border-primary">
     <div class="row">
       <div class="col-md-2 border border-primary">
-        <button @click="setComponentId(0)">Zarejestruj obecność</button>
+        <button @click="setComponentId(0)">Lista przedmiotów</button>
       </div>
       <div class="col-md-10 border border-primary">
         <div v-if="componentId == 0">
-          <RegisterAttendence />
+          <StudentCourses />
         </div>
         <div v-if="componentId == 1">
         </div>
@@ -14,7 +14,7 @@
     </div>
     <div class="row">
       <div class="col-md-2 border border-primary">
-        <button @click="setComponentId(1)">Rejestracja urządzenia</button>
+        <button @click="setComponentId(1)">Funkcjonalność w tworzeniu</button>
       </div>
     </div>
   </div>
@@ -35,7 +35,7 @@
 import { onMounted, ref } from 'vue'
 import validateToken from '@/lib/Extensions/JWTDecodeLib'
 import { useRouter } from 'vue-router'
-import RegisterAttendence from './StudentComponents/RegisterAttendence.vue'
+import StudentCourses from './StudentComponents/StudentCourses.vue'
 
 
 
@@ -46,9 +46,9 @@ onMounted(() => {
   const isValidToken = validateToken()
 
   if (isValidToken.isValid == true && isValidToken.role == 'teacher') {
-    router.push('/LecturerDashboard')
+    router.push('/Lecturer/LecturerDashboard')
   } else if (isValidToken.isValid == true && isValidToken.role == 'student') {
-    router.push('/StudentDashboard')
+    router.push('/Student/StudentDashboard')
   } else {
     router.push('/')
   }

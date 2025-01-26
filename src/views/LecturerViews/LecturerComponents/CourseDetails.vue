@@ -111,6 +111,6 @@ const registerDevice = async (id: number) => {
 };
 
 const goToScan = () => {
-  router.push(`/lecturer/scanningpage/${courseId}`)
+  router.push(`/scanningpage/${courseId}`)
 }
 </script>

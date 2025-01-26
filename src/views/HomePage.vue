@@ -4,23 +4,11 @@
   <form @submit.prevent="LogIn">
     <div class="form-group">
       <label for="loginname">Login</label>
-      <input
-        type="login"
-        class="form-control"
-        v-model="formData.loginName"
-        id="login"
-        placeholder="Enter login"
-      />
+      <input type="login" class="form-control" v-model="formData.loginName" id="login" placeholder="Enter login" />
     </div>
     <div class="form-group">
       <label for="password">Password</label>
-      <input
-        type="password"
-        class="form-control"
-        v-model="formData.password"
-        id="password"
-        placeholder="Password"
-      />
+      <input type="password" class="form-control" v-model="formData.password" id="password" placeholder="Password" />
     </div>
     <button type="submit" class="btn btn-primary" @click="LogIn()">Zaloguj</button>
   </form>
@@ -45,16 +33,23 @@ onMounted(() => {
   const isValidToken = validateToken()
 
   if (isValidToken.isValid == true && isValidToken.role == 'teacher') {
-    router.push('/LecturerDashboard')
+    router.push('/Lecturer/LecturerDashboard')
   } else if (isValidToken.isValid == true && isValidToken.role == 'student') {
-    router.push('/StudentDashboard')
+    router.push('/Student/StudentDashboard')
   }
 })
 
 const LogIn = async () => {
+
+  const isValidToken = validateToken()
   try {
     await Backend.userLogin(formData.value.loginName, formData.value.password)
-    router.push('/LecturerDashboard')
+
+    if (isValidToken.isValid == true && isValidToken.role == 'teacher') {
+      router.push('/Lecturer/LecturerDashboard')
+    } else if (isValidToken.isValid == true && isValidToken.role == 'student') {
+      router.push('/Student/StudentDashboard')
+    }
   } catch {
     formData.value.errorMessage = 'Nie udało się zalogować. Sprawdź dane logowania.'
   }
