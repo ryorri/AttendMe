@@ -6,6 +6,7 @@
       <p><strong>Miejsce:</strong> {{ course.locationName }}</p>
       <p><strong>Rozpoczęcie:</strong> {{ formatDate(course.dateStart) }}</p>
       <p><strong>Zakończenie:</strong> {{ formatDate(course.dateEnd) }}</p>
+      <p><strong>Frekwencja:</strong> {{ attendenceList }}/{{ coursesList }}</p>
       <button @click="goToScan()">Skanuj obecność</button>
       <div v-if="isScan">
         <RegisterAttendence />
@@ -36,26 +37,27 @@ const props = defineProps({
   }
 });
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const courses = ref<any>();
 const courseId = props.selectedCourseId
 const course = props.courseData
-const attendence = ref()
-const isScan = ref(false)
 
+const isScan = ref(false)
+const coursesList = ref()
+const attendenceList = ref()
 
 onMounted(async () => {
   try {
-    await Backend.courseStudentGroupSessionsGet(courseId).then(
-      (result) => courses.value = result);
-    console.log(courses.value)
+    const courses = await Backend.courseStudentGroupSessionsGet(courseId);
 
-    await Backend.courseStudentAttendanceGet(courseId).then((result) => attendence.value = result)
-    console.log(attendence.value)
+    const attendence = await Backend.courseStudentAttendanceGet(courseId)
+
+    attendenceList.value = attendence.length
+    coursesList.value = courses.length
+
 
   } catch (error) {
     console.error('Błąd podczas ładowania sesji:', error);
   }
+
 });
 
 function goToScan() {

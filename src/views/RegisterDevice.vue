@@ -26,12 +26,14 @@
 
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { Backend } from '@/main';
 
+import { onMounted, onUnmounted, ref } from 'vue'
+import validateToken from '@/lib/Extensions/JWTDecodeLib'
 
 const route = useRoute()
+const router = useRouter()
 const token = route.params.token.toString()
 
 const formData = ref({
@@ -43,7 +45,8 @@ const formData = ref({
 
 const errorMessage = ref()
 const successMessage = ref()
-
+const interval = ref()
+const refreshInterval = 60000;
 
 const registerDevice = async () => {
   try {
@@ -51,6 +54,26 @@ const registerDevice = async () => {
     successMessage.value = 'Zarejestrowano! Możesz zamknać okno.'
   } catch {
     errorMessage.value = 'Nie udało się zarejestrowaĆ. Sprawdź dane.'
+  }
+}
+
+onMounted(() => {
+  interval.value = setInterval(TryToken, refreshInterval);
+})
+
+onUnmounted(() => {
+  if (interval.value) {
+    clearInterval(interval.value);
+  }
+})
+
+const TryToken = () => {
+  const isValidToken = validateToken()
+
+  if (isValidToken.isValid == true && isValidToken.role == 'teacher') {
+    router.push('/Lecturer/LecturerDashboard').then(() => { window.location.reload() })
+  } else if (isValidToken.isValid == true && isValidToken.role == 'student') {
+    router.push('/Student/StudentDashboard').then(() => { window.location.reload() })
   }
 }
 

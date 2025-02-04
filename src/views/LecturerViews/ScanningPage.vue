@@ -1,27 +1,32 @@
 <template>
 
 
-  <div v-if="isSaved">Zapisano!</div>
-  <div v-if="qrData">{{ qrData.value }}!</div>
+  <div v-if="isSaved">Obecny jest {{ att.name }} {{ att.surname }}</div>
   <qrcode-stream @detect="onDetect" />
 
-
-  <button @click="checkData()">Check</button>
 
 </template>
 
 <script setup lang="ts">
 import { QrcodeStream } from 'vue-qrcode-reader'
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { Backend } from '@/main'
+import { useRoute, useRouter } from 'vue-router'
+import validateToken from '@/lib/Extensions/JWTDecodeLib'
+
+
+const route = useRoute()
+const router = useRouter()
+
+
+const sessionId = Number(route.params.id)
 
 const qrData = ref()
 const isSaved = ref(false)
+const att = ref()
+const interval = ref()
+const refreshInterval = 60000;
 
-
-const checkData = () => {
-  console.log(qrData.value)
-}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function onDetect(detectedCodes: any) {
@@ -32,9 +37,8 @@ function onDetect(detectedCodes: any) {
 async function checkQrData() {
   if (qrData.value != undefined) {
     isSaved.value = true
-
-    Backend.deviceTokenResult = qrData.value[0].rawValue
-    await Backend.courseSessionAttendanceRegister(qrData.value[0].rawValue)
+    att.value = await Backend.courseSessionAttendanceRegister(qrData.value[0].rawValue);
+    console.log(att.value)
   }
 
   if (isSaved.value) {
@@ -42,17 +46,39 @@ async function checkQrData() {
       isSaved.value = false
 
       qrData.value = undefined
-    }, 2000)
-    console.log("asd")
+    }, 5000)
   }
 
 
 }
 
-onMounted(() => {
+onMounted(async () => {
+  interval.value = setInterval(TryToken, refreshInterval);
+  const scanerToken = await Backend.courseSessionAttendanceScannerTokenGet(sessionId);
+  Backend.deviceTokenResult = scanerToken;
 
-  setInterval(checkQrData, 2000);
+  setInterval(checkQrData, 5000);
 
 })
+
+
+
+
+
+onUnmounted(() => {
+  if (interval.value) {
+    clearInterval(interval.value);
+  }
+})
+
+const TryToken = () => {
+  const isValidToken = validateToken()
+
+  if (isValidToken.isValid == true && isValidToken.role == 'teacher') {
+    router.push('/Lecturer/LecturerDashboard').then(() => { window.location.reload() })
+  } else if (isValidToken.isValid == true && isValidToken.role == 'student') {
+    router.push('/Student/StudentDashboard').then(() => { window.location.reload() })
+  }
+}
 
 </script>

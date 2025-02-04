@@ -52,6 +52,7 @@ import { Backend } from '@/main'
 import { defineProps, ref, onMounted, onUnmounted } from 'vue'
 import { formatDate } from '@/lib/Extensions/dateFormatter'
 
+
 const props = defineProps({
   selectedCourseId: {
     type: Number,
@@ -111,6 +112,6 @@ const registerDevice = async (id: number) => {
 };
 
 const goToScan = () => {
-  router.push(`/scanningpage/${courseId}`)
+  router.push({ name: "ScanningPage", params: { id: courseId } })
 }
 </script>

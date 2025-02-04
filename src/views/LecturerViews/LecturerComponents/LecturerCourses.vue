@@ -5,14 +5,16 @@
       <CourseDetails :selectedCourseId=selectedCourseId />
     </div>
     <div v-else>
-      <input v-model="searchQuery" type="text" placeholder="Wyszukaj..." class="form-control mb-3" />
+      <div>
+        <h1 class="extenderH1">Kursy</h1>
+        <input v-model="searchQuery" type="text" placeholder="Wyszukaj..." class="form-control mb-3 filterForm" />
 
-      <select v-model="dateFilter" class="form-control mb-3">
-        <option value="all">Wszystko</option>
-        <option value="past">Minione</option>
-        <option value="future">Przyszłe</option>
-      </select>
-
+        <select v-model="dateFilter" class="form-control mb-3 filterForm">
+          <option value="all">Wszystko</option>
+          <option value="past">Minione</option>
+          <option value="future">Przyszłe</option>
+        </select>
+      </div>
       <ul class="list-unstyled">
         <li v-for="session in filteredSessions" :key="session.id" class="border rounded">
           <h4>{{ session.courseName }}</h4>
