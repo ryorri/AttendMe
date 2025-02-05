@@ -22,7 +22,7 @@
     </div>
   </div>
   <div class="logout_Button">
-    <a href="#" class="buttons" @click="LogOut()">Wyloguj</a>
+    <a href="#" class="buttonLogOut" @click="LogOut()">Wyloguj</a>
   </div>
 </template>
 

@@ -1,9 +1,14 @@
 <template>
-
-
-  <div v-if="isSaved">Obecny jest {{ att.name }} {{ att.surname }}</div>
-  <qrcode-stream @detect="onDetect" />
-
+  <div class="centred" style="color:var(--white);margin-top: 3%;">
+    <h1>Rejestracja obecności</h1>
+  </div>
+  <div class="centred" style="color:var(--white)">
+    <h3>Pokaż swój kod QR do skanera</h3>
+  </div>
+  <div class="centred">
+    <div class="qrReader"><qrcode-stream @detect="onDetect" /></div>
+    <div v-if="isSaved" class="alert alert-success">Obecny jest {{ att.name }} {{ att.surname }}</div>
+  </div>
 
 </template>
 
@@ -25,7 +30,7 @@ const qrData = ref()
 const isSaved = ref(false)
 const att = ref()
 const interval = ref()
-const refreshInterval = 60000;
+const refreshInterval = 600000;
 
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -75,7 +80,7 @@ const TryToken = () => {
   const isValidToken = validateToken()
 
   if (isValidToken.isValid == true && isValidToken.role == 'teacher') {
-    router.push('/Lecturer/LecturerDashboard').then(() => { window.location.reload() })
+    router.push(`/ScanningPage/${sessionId}`).then(() => { window.location.reload() })
   } else if (isValidToken.isValid == true && isValidToken.role == 'student') {
     router.push('/Student/StudentDashboard').then(() => { window.location.reload() })
   }

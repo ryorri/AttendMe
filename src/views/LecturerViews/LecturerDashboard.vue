@@ -7,7 +7,7 @@
       <div class="col-md-2">
         <a href="#" class="buttons" @click="setComponentId(0)">Kursy</a>
       </div>
-      <div class="col-md-10">
+      <div class="col-md-10 border border-primary">
         <div v-if="componentId == 0">
           <LecturerCourses />
         </div>

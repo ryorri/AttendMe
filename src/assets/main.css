@@ -114,3 +114,53 @@ body{
   width: 30vw;
   font-size: 100px;
 }
+
+.course_list{
+  background-color: var(--verylightgreen);
+  padding: 1%;
+  padding-left: 3%;
+  border: 2px solid #28a745;
+  border-radius: 10px;
+  margin-bottom: 1%;
+  padding-right: 3%;
+}
+.p_in_course_list{
+  display: inline-block;
+  width: 10vw;
+  text-align: right;
+  padding-right: 1%;;
+}
+.h_in_course_list{
+  display: inline-block;
+  width: 60vw;
+}
+
+.back_buttons{
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: var(--darkgreen);
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background 0.3s ease;
+  width: 15%;
+  height: 5vh;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1%;
+}
+
+.qrReader{
+  width: 50%;
+  height: 50%;
+}
+
+.register {
+  background-color: var(--white);
+  height: 50%;
+  width: 30%;
+  margin-top: 3%;
+  padding: 1%;
+}

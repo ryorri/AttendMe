@@ -1,6 +1,7 @@
 <template>
   <div>
     <div v-if="course">
+      <button class="back_buttons" @click="$emit('go-back')">Powrót do listy</button>
       <p><strong>Nazwa kursu:</strong> {{ course.courseName }}</p>
       <p><strong>Grupa:</strong> {{ course.courseGroupName }}</p>
       <p><strong>Miejsce:</strong> {{ course.locationName }}</p>
@@ -8,7 +9,7 @@
       <p><strong>Zakończenie:</strong> {{ formatDate(course.dateEnd) }}</p>
 
 
-      <button @click="goToScan()">asdas</button>
+      <button class="back_buttons" @click="goToScan()">Rejestruj obecność</button>
 
       <h3>Lista obecności</h3>
 
@@ -114,4 +115,5 @@ const registerDevice = async (id: number) => {
 const goToScan = () => {
   router.push({ name: "ScanningPage", params: { id: courseId } })
 }
+
 </script>

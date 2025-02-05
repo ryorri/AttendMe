@@ -13,7 +13,7 @@
         <input type="password" class="form-control" v-model="formData.password" id="password" placeholder="Password" />
       </div>
       <div class="centred top-margin">
-        <button type="submit" class="btn" @click="LogIn()">Zaloguj</button>
+        <button type="submit" class="btnn" @click="LogIn()">Zaloguj</button>
       </div>
     </form>
   </div>
@@ -21,11 +21,24 @@
 </template>
 
 <style lang="css">
-.btn {
+.btnn {
+  display: inline-block;
+  padding: 10px 20px;
   background-color: var(--darkgreen);
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background 0.3s ease;
+  width: 7vw;
+  height: 8vh;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1%;
 }
 
-.btn:hover {
+.btnn:hover {
   background-color: var(--green);
 }
 </style>

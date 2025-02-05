@@ -2,8 +2,6 @@
   <qrcode-vue :value="value" :level="level" :render-as="renderAs" :background="background" :foreground='foreground'
     :gradient="gradient" :gradient-type="gradientType" :gradient-start-color="gradientStartColor"
     :gradient-end-color="gradientEndColor" :size="400" />
-
-  <button @click="check">Check</button>
 </template>
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
@@ -32,8 +30,4 @@ onMounted(() => {
 
 })
 
-const check = () => {
-  Backend.userAttendanceTicketGet().then((result) => (value.value = result.token))
-  console.log(value)
-}
 </script>

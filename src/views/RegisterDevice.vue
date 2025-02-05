@@ -1,26 +1,33 @@
 <template>
-  Zarejestruj swoje urządzenie
+  <div class="centred">
+    <h1 style="color:white; margin-top:3%">Zarejestruj swoje urządzenie</h1>
+  </div>
 
-  <form @submit.prevent="registerDevice">
-    <div class="form-group">
-      <label for="deviceName">Nazwa urządzenia</label>
-      <input type="deviceName" class="form-control" v-model="formData.deviceName" id="login" />
-    </div>
-    <div class="form-group">
-      <label for="studentName">Imię</label>
-      <input type="studentName" class="form-control" v-model="formData.studentName" id="studentName" />
-    </div>
-    <div class="form-group">
-      <label for="studentSurname">Nazwisko</label>
-      <input type="studentSurname" class="form-control" v-model="formData.studentSurname" id="studentSurname" />
-    </div>
-    <div class="form-group">
-      <label for="albumIdNumber">Nr albumu</label>
-      <input type="albumIdNumber" class="form-control" v-model="formData.albumIdNumber" id="albumIdNumber" />
-    </div>
-    <button type="submit" class="btn btn-primary" @click="registerDevice()">Zarejestruj urządzenie</button>
-  </form>
+  <div class="centred">
+    <form class="border border-2 rounded register" @submit.prevent="registerDevice">
+      <div class="form-group">
+        <label for="deviceName">Nazwa urządzenia</label>
+        <input type="deviceName" class="form-control" v-model="formData.deviceName" id="login" />
+      </div>
+      <div class="form-group">
+        <label for="studentName">Imię</label>
+        <input type="studentName" class="form-control" v-model="formData.studentName" id="studentName" />
+      </div>
+      <div class="form-group">
+        <label for="studentSurname">Nazwisko</label>
+        <input type="studentSurname" class="form-control" v-model="formData.studentSurname" id="studentSurname" />
+      </div>
+      <div class="form-group">
+        <label for="albumIdNumber">Nr albumu</label>
+        <input type="albumIdNumber" class="form-control" v-model="formData.albumIdNumber" id="albumIdNumber" />
+      </div>
+      <div class="centred">
+        <button type="submit" class="btnn" @click="registerDevice()">Zarejestruj
+          urządzenie</button>
+      </div>
 
+    </form>
+  </div>
   <div v-if="successMessage">{{ successMessage }}</div>
   <div v-else>{{ errorMessage }}</div>
 
@@ -71,9 +78,9 @@ const TryToken = () => {
   const isValidToken = validateToken()
 
   if (isValidToken.isValid == true && isValidToken.role == 'teacher') {
-    router.push('/Lecturer/LecturerDashboard').then(() => { window.location.reload() })
+    router.push(`registerdevice/${token}`).then(() => { window.location.reload() })
   } else if (isValidToken.isValid == true && isValidToken.role == 'student') {
-    router.push('/Student/StudentDashboard').then(() => { window.location.reload() })
+    router.push(`registerdevice/${token}`).then(() => { window.location.reload() })
   }
 }
 

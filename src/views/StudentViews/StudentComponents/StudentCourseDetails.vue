@@ -1,13 +1,14 @@
 <template>
   <div>
     <div v-if="course">
+      <button class="back_buttons" @click="$emit('go-back')">Powrót do listy</button>
       <p><strong>Nazwa kursu:</strong> {{ course.courseName }}</p>
       <p><strong>Grupa:</strong> {{ course.courseGroupName }}</p>
       <p><strong>Miejsce:</strong> {{ course.locationName }}</p>
       <p><strong>Rozpoczęcie:</strong> {{ formatDate(course.dateStart) }}</p>
       <p><strong>Zakończenie:</strong> {{ formatDate(course.dateEnd) }}</p>
       <p><strong>Frekwencja:</strong> {{ attendenceList }}/{{ coursesList }}</p>
-      <button @click="goToScan()">Skanuj obecność</button>
+      <button class="back_buttons" @click="goToScan()">Skanuj obecność</button>
       <div v-if="isScan">
         <RegisterAttendence />
       </div>
