@@ -27,7 +27,6 @@
         </thead>
         <tbody>
           <tr v-for="student in studentList" :key="student.id">
-            <td>{{ student.attenderUserId }} </td>
             <td>{{ student.userSurname }} </td>
             <td>{{ student.userName }} </td>
             <td>{{ student.studentAlbumIdNumber }} </td>
@@ -37,6 +36,11 @@
             </td>
             <td><button type="button" class="btn btn-secondary" @click="registerDevice(student.attenderUserId)">Skopiuj
                 link</button></td>
+            <td>
+              <p>{{ userDevices[student.attenderUserId] || '' }}</p><button class="btn btn-secondary"
+                @click="resetUserDevice(student.attenderUserId)">Reset</button>
+
+            </td>
           </tr>
         </tbody>
       </table>
@@ -88,9 +92,14 @@ onMounted(async () => {
     await fetchStudentList();
 
     interval.value = setInterval(fetchStudentList, refreshInterval);
+
+    for (const student of studentList.value) {
+      await fetchUserDevice(student.attenderUserId);
+    }
   } catch (error) {
     console.error('Błąd podczas ładowania sesji:', error);
   }
+
 });
 
 onUnmounted(() => {
@@ -116,4 +125,17 @@ const goToScan = () => {
   router.push({ name: "ScanningPage", params: { id: courseId } })
 }
 
+
+const userDevices = ref<{ [key: number]: string }>({});
+
+const fetchUserDevice = async (id: number) => {
+  const user = await Backend.userGet(id);
+  userDevices.value[id] = user.deviceName ?? ''
+};
+
+
+const resetUserDevice = (id: number) => {
+
+  Backend.userDeviceReset(id)
+}
 </script>
