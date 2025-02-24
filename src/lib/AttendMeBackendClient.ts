@@ -1,4 +1,4 @@
-import { dateReviver } from '../../helpers/JsonHelpers'
+import { dateReviver } from '../helpers/JsonHelpers'
 import {
   AttendMeBackendClientBase,
   type DeviceRegisterDTO,

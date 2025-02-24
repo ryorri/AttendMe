@@ -1,43 +1,43 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomePage from '@/views/HomePage.vue'
-import LecturerDashboard from '@/views/LecturerViews/LecturerDashboard.vue'
-import StudentDashboard from '@/views/StudentViews/StudentDashboard.vue'
-import CourseDetails from '@/views/LecturerViews/LecturerComponents/CourseDetails.vue'
-import RegisterDevice from '@/views/RegisterDevice.vue'
-import ScanningPage from '@/views/LecturerViews/ScanningPage.vue'
+import LoginPage from '@/views/LoginPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'HomePage',
-      component: HomePage,
+      name: 'LoginPage',
+      component: LoginPage,
     },
     {
-      path: '/Lecturer/LecturerDashboard',
+      path: '/LecturerDashboard',
       name: 'LecturerDashboard',
-      component: LecturerDashboard,
+      component: () => import('@/views/Lecturer/LecturerDashboard.vue'),
     },
     {
-      path: '/Student/StudentDashboard',
+      path: '/StudentDashboard',
       name: 'StudentDashboard',
-      component: StudentDashboard,
+      component: () => import('@/views/Student/StudentDashboard.vue'),
     },
     {
-      path: '/course/:id',
-      name: 'CourseDetails',
-      component: CourseDetails,
+      path: '/LecturerDashboard/SelectedCourse/:id',
+      name: 'SelectedCourse',
+      component: () => import('@/views/Lecturer/SelectedCourse.vue'),
     },
     {
-      path: '/registerdevice/:token',
+      path: '/StudentDashboard/SelectedCourse/:id/:courseId',
+      name: 'SelectedCourseStudent',
+      component: () => import('@/views/Student/SelectedCourse.vue'),
+    },
+    {
+      path: '/RegisterDevice/:token',
       name: 'RegisterDevice',
-      component: RegisterDevice,
+      component: () => import('@/views/RegisterDevice.vue'),
     },
     {
-      path: '/scanningpage/:id',
+      path: '/ScanningPage/:courseId',
       name: 'ScanningPage',
-      component: ScanningPage,
+      component: () => import('@/views/ScanningPage.vue'),
     },
   ],
 })
