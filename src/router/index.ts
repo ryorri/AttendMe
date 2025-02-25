@@ -63,12 +63,11 @@ const router = createRouter({
   ],
 })
 
-// 🔹 Obsługa błędu 401 przy przechodzeniu między stronami
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth) {
     if (!isTokenValid()) {
       console.warn('Błąd 401 - Token wygasł, przekierowanie do logowania')
-      return next('/') // Przekierowanie na stronę logowania
+      return next('/')
     }
   }
   next()
