@@ -10,7 +10,13 @@ import router from './router'
 
 const backend = new AttendMeBackendClient('https://attendme-backend.runasp.net')
 
+backend.onUnauthorized = () => {
+  router.push('/')
+}
+
 const app = createApp(App)
+
+app.config.globalProperties.$apiClient = backend
 
 app.use(createPinia())
 app.use(router)

@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, onUnmounted } from 'vue';
 import { Backend } from '@/main';
 import { formatDate } from '@/lib/Extensions/dateFormatter';
 import QrcodeVue from 'qrcode.vue';
@@ -44,6 +44,7 @@ const session = ref()
 const noAtt = ref()
 const noCou = ref()
 const isAbsent = ref()
+const interval = ref()
 
 const qr = ref(false)
 const value = ref();
@@ -53,7 +54,13 @@ onMounted(() => {
   getSessionDetails()
   getTicket();
   getAttendence()
-  setInterval(getTicket, 2000);
+  interval.value = setInterval(getTicket, 2000);
+})
+
+onUnmounted(() => {
+  if (interval.value) {
+    clearInterval(interval.value);
+  }
 })
 
 const getSessionDetails = async () => {

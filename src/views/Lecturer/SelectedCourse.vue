@@ -66,7 +66,7 @@
 
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Backend } from '@/main';
 import { formatDate } from '@/lib/Extensions/dateFormatter';
@@ -88,6 +88,12 @@ onMounted(() => {
   interval.value = setInterval(getStudentList, 30000);
 
 });
+
+onUnmounted(() => {
+  if (interval.value) {
+    clearInterval(interval.value);
+  }
+})
 
 const getCourseDetails = async () => {
   try {

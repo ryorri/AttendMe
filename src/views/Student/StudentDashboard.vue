@@ -71,7 +71,6 @@ const router = useRouter()
 onMounted(() => {
   getSessions();
   userStore.initializeStore();
-  userStore.setTokenExpiration();
 });
 
 const getSessions = async () => {

@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import { useRouter } from 'vue-router'
 
 export const useUserStore = defineStore('auth', {
   state: () => ({
@@ -23,7 +22,6 @@ export const useUserStore = defineStore('auth', {
         this.surname = parsedData.surname ?? null
         this.isTeacher = parsedData.isTeacher ?? null
         this.isStudent = parsedData.isStudent ?? null
-        this.setTokenExpiration()
       }
     },
 
@@ -48,24 +46,6 @@ export const useUserStore = defineStore('auth', {
         isStudent: this.isStudent,
       }
       sessionStorage.setItem('userData', JSON.stringify(userData))
-    },
-
-    setTokenExpiration() {
-      const router = useRouter()
-      const token = sessionStorage.getItem('attend-me:userAuthData')
-
-      if (token) {
-        const parsed = JSON.parse(token)
-        const expiresTime = new Date(parsed.expires)
-
-        const timeout = expiresTime.getTime() - Date.now()
-        if (timeout > 0) {
-          this.logoutTimer = setTimeout(() => {
-            this.logout()
-            router.push({ name: 'LoginPage' })
-          }, timeout)
-        }
-      }
     },
 
     logout() {

@@ -66,12 +66,12 @@ const searchQuery = ref('');
 const dateFilter = ref('all');
 const currentDate = new Date();
 
-onMounted(() => {
+onMounted(async () => {
   userStore.initializeStore();
-  userStore.setTokenExpiration();
-
   getSessions();
+
 });
+
 
 const LogOut = () => {
   userStore.logout();
@@ -81,8 +81,7 @@ const LogOut = () => {
 const getSessions = async () => {
   try {
     sessions.value = await Backend.courseTeacherSessionsGet({ pageNumber: 1, pageSize: 99999 }).then(
-      (result) => result.items
-    );
+      (result) => result.items);
   } catch (error) {
     console.error('Błąd podczas ładowania sesji:', error);
   }
